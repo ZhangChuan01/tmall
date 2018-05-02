@@ -13,7 +13,7 @@
           </div>
           <transition name="fade">
             <div class="goodsInfo" v-show="goodsFlag">
-              <div class="goodsHeader">
+              <div class="goodsHeader" ref="goodsHeader">
                 <div>全部分类</div>
               </div>
               <div class="goodsContent" ref="goodsContent" >
@@ -134,6 +134,13 @@
           this.type = this.$store.state.imgType;
         },
         mounted(){
+          this.$nextTick(() => {
+            let height = document.body.clientHeight || document.documentElement.clientHeight;
+            let headerHeight = parseInt(getComputedStyle(this.$refs.goodsHeader,false)["height"]);
+            this.$refs.sidebarWrapper.style.height = (height - headerHeight) + "px";
+            this.$refs.contentWrapper.style.height = (height - headerHeight) + "px";
+          })
+
         }
     }
 </script>
@@ -205,6 +212,7 @@
         transform: translateY(-50%);
         right: 2%;
         width: 5%;
+        padding: 10px 12px;
         span{
           display: block;
           font-size: 24px;
@@ -215,9 +223,8 @@
         top: 0;
         left: -4px;
         width: 90%;
-        display: flex;
-        flex-direction: column;
         .goodsHeader{
+          position: relative;
           height: 80px;
           background-color: #EEE;
           border-bottom: 1px solid #E1E1E1;/*no*/
@@ -230,7 +237,6 @@
           }
         }
         .goodsContent{
-          flex: 1;
           background-color: #fff;
           font-size: 0;
           .sidebarWrapper{
@@ -238,9 +244,7 @@
             vertical-align: top;
             width: 23%;
             background: #eee;
-            height:1000px;
             font-size: 26px;
-            padding-bottom: 6px; /*no*/
             &>.sidebar{
               div{
                 line-height: 100px;
@@ -257,9 +261,7 @@
             display: inline-block;
             vertical-align: top;
             width: 77%;
-            height: 900px;
             font-size: 28px;
-            padding-bottom: 30px;
             .goods{
               .channel{
                 width: 90%;
