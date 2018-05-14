@@ -68,7 +68,7 @@
       vertical-align: top;
       list-style: none;
       width: 49%;
-      box-shadow: 1px 1px 1px 2px #ccc; /*no*/
+      border: 1px solid #ccc; /*no*/
       box-sizing: border-box;
       height: 640px;
       margin-top: 20px;

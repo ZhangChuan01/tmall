@@ -25,6 +25,7 @@
     import Offcial from '../components/Offcial'
     import Goods from '../components/Goods'
     import AppFooter from '../components/AppFooter'
+    import { MessageBox } from 'mint-ui';
     export default {
         name: "Home",
         data(){
@@ -43,8 +44,7 @@
             let browser = window.navigator.userAgent;
             let reg = /Android|webOS|iPhone|iPod|BlackBerry/i
             if(!reg.test(browser)){
-              this.$alert('为了您更好的体验请用移动端设备(手机)访问此网站', '提示',
-                {confirmButtonText: '确定'})
+              MessageBox('提示', '请使用移动端设备(手机)浏览器访问此网站');
             }
             console.log(browser);
           },
@@ -81,9 +81,6 @@
           if(this.checkWebp()){
             this.$store.commit("setImgType",".webp");
             this.type = this.$store.state.imgType;
-          }else {
-            this.$alert('您的浏览器不支持webp格式图片，个人项目没有准备过多的png,jpg等格式图片，为了您更好的体验，请更换浏览器，如Chrome，UC，QQ等浏览器', '提示',
-              {confirmButtonText: '确定'})
           }
         },
         mounted(){

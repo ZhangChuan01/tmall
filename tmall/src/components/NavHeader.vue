@@ -5,7 +5,7 @@
           <input v-model="scrollTop" placeholder="搜索商品、店铺" ref="searchInput">
         </div>
         <img @click="model('show')" src="../assets/menu.png" alt="">
-        <span>登录</span>
+        <span @click="login">登录</span>
         <div ref="model" class="model" v-show="modelFlag">
           <div class="close" @click="model('hide')">
             <span>点击此处返回</span>
@@ -127,6 +127,11 @@
           check(index){
             this.checkedIndex = index;
             this.contentScroll.scrollTo(0,0);
+          },
+          login(){
+            this.$router.push({
+              name: "login"
+            })
           }
         },
         created(){
@@ -263,6 +268,7 @@
             width: 77%;
             font-size: 28px;
             .goods{
+              overflow: hidden;
               .channel{
                 width: 90%;
                 margin: 10px  auto;
@@ -270,6 +276,7 @@
                 font-size: 12px; /*no*/
                 line-height: 80px;
                 color: #fff;
+                box-sizing: border-box;
               }
               .title{
                 color: #9B9B9B;
