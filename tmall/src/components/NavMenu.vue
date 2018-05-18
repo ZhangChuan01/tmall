@@ -22,9 +22,9 @@
       },
       methods: {
         getClassification(){
-          this.$axios.get("/classificationData").then((response) => {
-            if(response.data.data.status == "0"){
-              this.classification = response.data.data.result;
+          this.$axios.get("/image/classification").then((response) => {
+            if(response.data.code == "1"){
+              this.classification = response.data.res;
             }
           })
         }

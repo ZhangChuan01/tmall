@@ -16,7 +16,7 @@
             </div>
           </div>
           <div class="goodsRemake">
-            <span :class="{'remake': item.remark == 0}">[{{item.remarkType}}]</span>
+            <span :class="{'remake': item.remark == 1}">[{{item.remarkType}}]</span>
             <span>{{item.remarkText}}</span>
           </div>
         </li>
@@ -34,10 +34,16 @@
         },
         methods: {
           getGoodsData(){
-            this.$axios.get("/goodsData").then((response) => {
-              let data = response.data.data;
-              if(data.status == 0){
-                this.goodsList = data.result;
+            this.$axios.get("/image/goods").then((response) => {
+              if(response.data.code == "1"){
+                response.data.res.forEach((item) => {
+                  if(item.prompt.search(",")>-1){
+                    item.prompt = item.prompt.split(",");
+                  }else {
+                    item.prompt = [item.prompt];
+                  }
+                })
+                this.goodsList = response.data.res;
               }
             })
           },
@@ -101,7 +107,6 @@
           font-size: 28px;
           color: #FF3B44;
           background-color: #FAD3D5;
-          padding: 4px 10px;
           margin-left: 10px;
         }
       }

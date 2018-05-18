@@ -88,11 +88,48 @@
         },
         methods: {
           getGoodsList(){
-            this.$axios.get("/navImageData").then((response) => {
-              let data = response.data.data;
+            this.$axios.get("/image/navImage").then((response) => {
+              let data = response.data;
               console.log(data);
-              if(data.status == "0"){
-                this.goodsList = data.result;
+              if(data.code == "1"){
+                let result = [];
+                let f_arr = [];
+                data.res.forEach((item) => {
+                  if(f_arr.indexOf(item.f_name)<0){
+                    f_arr.push(item.f_name);
+                  }
+                })
+                f_arr.forEach((item) => {
+                  let obj = new Object();
+                  let fName = item;
+                  obj.classification = item;
+                  obj.res = [];
+                  data.res.forEach((item1) => {
+                    if(item1.f_name == fName){
+                      let cflag = obj.res.some((checkItem) => {
+                        return checkItem.title == item1.s_name;
+                      })
+                      if(!cflag){
+                        let obj2 = new Object();
+                        obj2.title = item1.s_name;
+                        obj2.imgs = [];
+                        obj.res.push(obj2)
+                      }
+                    }
+                  })
+                  obj.res.forEach((sitem) => {
+                    data.res.forEach((item2) => {
+                      if(sitem.title == item2.s_name){
+                        let obj3 = new Object();
+                        obj3.name = item2.t_name;
+                        obj3.path = item2.t_path;
+                        sitem.imgs.push(obj3);
+                      }
+                    })
+                  })
+                  result.push(obj);
+                })
+                this.goodsList = result;
               }
             });
           },
@@ -286,14 +323,23 @@
               }
               .imgContainer{
                 width: 100%;
-                display: flex;
-                justify-content: space-around;
-                flex-wrap: wrap;
                 color: #5D5D5D;
+                font-size: 0;
+                text-align: left;
+                .img{
+                  display: inline-block;
+                  width: 33%;
+                  span{
+                    display: block;
+                    font-size: 12px;
+                    text-align: center;
+                  }
+                }
                 img{
                   width: 140px;
                   height: 140px;
                   display: block;
+                  margin: 0 auto;
                   margin-top: 20px;
                 }
                 .brand{

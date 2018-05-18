@@ -27,9 +27,9 @@
           this.browser = window.navigator.userAgent;
         },
         getBannerData(){
-          this.$axios.get("/bannerData").then((response) => {
-            if(response.data.data.status == "0"){
-              this.bannerList = response.data.data.result;
+          this.$axios.get("/image/banner").then((response) => {
+            if(response.data.code == "1"){
+              this.bannerList = response.data.res;
             }
           })
         }

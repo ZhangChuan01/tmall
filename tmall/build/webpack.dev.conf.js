@@ -13,13 +13,13 @@ const portfinder = require('portfinder')
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
-const express = require("express");
-const app = express();
-let router = express.Router();
-let classificationData = require("../mock/classification.json");
-let bannerData = require("../mock/banner.json");
-let goodsData = require("../mock/goods.json");
-let navImageData = require("../mock/navImage.json");
+// const express = require("express");
+// const app = express();
+// let router = express.Router();
+// let classificationData = require("../mock/classification.json");
+// let bannerData = require("../mock/banner.json");
+// let goodsData = require("../mock/goods.json");
+// let navImageData = require("../mock/navImage.json");
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -51,28 +51,28 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     watchOptions: {
       poll: config.dev.poll,
     },
-    before(app){
-      app.get('/classificationData',(req,res) => {
-        res.json({
-          data: classificationData
-        })
-      }),
-      app.get('/bannerData',(req,res) => {
-        res.json({
-          data: bannerData
-        })
-      }),
-      app.get('/goodsData',(req,res) => {
-        res.json({
-          data: goodsData
-        })
-      }),
-      app.get('/navImageData',(req,res) => {
-        res.json({
-          data: navImageData
-        })
-      })
-    }
+    // before(app){
+    //   app.get('/classificationData',(req,res) => {
+    //     res.json({
+    //       data: classificationData
+    //     })
+    //   }),
+    //   app.get('/bannerData',(req,res) => {
+    //     res.json({
+    //       data: bannerData
+    //     })
+    //   }),
+    //   app.get('/goodsData',(req,res) => {
+    //     res.json({
+    //       data: goodsData
+    //     })
+    //   }),
+    //   app.get('/navImageData',(req,res) => {
+    //     res.json({
+    //       data: navImageData
+    //     })
+    //   })
+    // }
   },
   plugins: [
     new webpack.DefinePlugin({
