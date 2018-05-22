@@ -90,7 +90,6 @@
           getGoodsList(){
             this.$axios.get("/image/navImage").then((response) => {
               let data = response.data;
-              console.log(data);
               if(data.code == "1"){
                 let result = [];
                 let f_arr = [];

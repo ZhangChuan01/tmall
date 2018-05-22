@@ -46,7 +46,6 @@
             if(!reg.test(browser)){
               MessageBox('提示', '请使用移动端设备(手机)浏览器访问此网站');
             }
-            console.log(browser);
           },
           getScrollTop(){
             let content = document.querySelector(".content");

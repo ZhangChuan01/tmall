@@ -52,29 +52,47 @@
         submit(){
           if(this.$refs.slider.isPassing){
             if(!this.phoneNumber || !this.password || !this.rpassword){
-              this.$message({
-                message: "手机号或密码,重复密码不能为空",
-                type: "warning"
+              this.$toast({
+                message: "手机号或密码,重复密码不能为空"
               })
             }else{
               let reg = /(^1[356789]{1}[0-9]{9}$)/;
               if(reg.test(this.phoneNumber)){
                 if(this.password != this.rpassword){
-                  this.$message({
+                  this.$toast({
                     message: "两次输入密码不一致"
                   })
                 }else {
-                  console.log("yes");
+                  this.$axios.post("/user/forgetPassword",{
+                    phoneNumber: this.phoneNumber,
+                    newPassword: this.password
+                  }).then((response) => {
+                    let data = response.data;
+                    if(data.code == 1){
+                      this.$toast({
+                        message: "重置成功",
+                        duration: 2000
+                      })
+                      this.$router.push({
+                        path: "/login"
+                      })
+                    }else {
+                      this.$toast({
+                        message: "重置失败",
+                        duration: 2000
+                      })
+                    }
+                  })
                 }
               }else {
-                this.$message({
+                this.$toast({
                   message: "请输入正确格式手机号",
                   type: "warning"
                 })
               }
             }
           }else {
-            this.$message({
+            this.$toast({
               message: "请滑动滑块完成验证"
             })
           }

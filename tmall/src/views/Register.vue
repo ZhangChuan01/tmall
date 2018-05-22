@@ -53,24 +53,44 @@
           submit(){
             if(this.$refs.slider.isPassing){
               if(!this.userName || !this.password || !this.phoneNumber){
-                this.$message({
+                this.$toast({
                   message: "用户名或密码,手机号不能为空",
-                  type: "warning"
+                  duration: 2000
                 })
               }else{
                 let reg = /(^1[356789]{1}[0-9]{9}$)/;
                 if(reg.test(this.phoneNumber)){
-                  console.log("login")
+                  this.$axios.post("/user/register",{
+                    name: this.userName,
+                    password: this.password,
+                    phoneNmuber: this.phoneNumber
+                  }).then((response) => {
+                    if(response.data.code == 1){
+                      this.$toast({
+                        message: "注册成功",
+                        duration: 2000
+                      })
+                      this.$router.push({
+                        path: "/login"
+                      })
+                    }else {
+                      this.$toast({
+                        message: response.data.msg,
+                        duration: 2000
+                      })
+                    }
+                  })
                 }else {
-                  this.$message({
+                  this.$toast({
                     message: "请输入正确格式手机号",
-                    type: "warning"
+                    duration: 2000
                   })
                 }
               }
             }else {
-              this.$message({
-                message: "请滑动滑块完成验证"
+              this.$toast({
+                message: "请滑动滑块完成验证",
+                duration: 2000
               })
             }
           },

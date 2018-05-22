@@ -37,9 +37,26 @@
           },
           login(){
             if(!this.userName || !this.password){
-              this.$message({
+              this.$toast({
                 message: "用户名或密码不能为空",
-                type: "warning"
+                duration: 2000
+              })
+            }else {
+              this.$axios.post("/user/login",{
+                name: this.userName,
+                password: this.password
+              }).then((response) => {
+                let data = response.data;
+                if(data.code == 1){
+                  this.$router.push({
+                    path: "/"
+                  })
+                }else {
+                  this.$toast({
+                    message: data.msg,
+                    duration: 2000
+                  })
+                }
               })
             }
           }
