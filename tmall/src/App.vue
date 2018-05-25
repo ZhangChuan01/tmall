@@ -12,7 +12,6 @@ export default {
 
 <style>
   @import '../node_modules/normalize.css';
-  @import "./common/css/iconfont.css";
   html,body,#app{
     height: 100%;
     font-family: PingFangSC-Medium;

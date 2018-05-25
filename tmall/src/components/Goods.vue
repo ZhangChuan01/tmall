@@ -1,7 +1,7 @@
 <template>
     <div id="goods">
       <ul>
-        <li v-for="(item,index) in goodsList" :key="index" class="goods">
+        <li v-for="(item,index) in goodsList" :key="index" class="goods" @click="goodsInfo(item.id)">
           <div class="goodsInfo">
             <div class="img">
               <img :src="'./static/'+item.path" :alt="item.name">
@@ -47,7 +47,7 @@
               }
             })
           },
-          tap(){
+          goodsInfo(goodId){
             console.log("test");
           }
         },

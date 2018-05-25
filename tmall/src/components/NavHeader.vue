@@ -5,7 +5,8 @@
           <input v-model="scrollTop" placeholder="搜索商品、店铺" ref="searchInput">
         </div>
         <img @click="model('show')" src="../assets/menu.png" alt="">
-        <span @click="login">登录</span>
+        <span @click="login" v-show="!islogin">登录</span>
+        <i class="iconfont icon-ren" v-show="islogin" @click="personalModel"></i>
         <div ref="model" class="model" v-show="modelFlag">
           <div class="close" @click="model('hide')">
             <span>点击此处返回</span>
@@ -45,9 +46,10 @@
 
 <script>
     import BScroll from 'better-scroll';
+    import Cookies from 'js-cookie';
     export default {
         name: "navHeader",
-        props: ["scrollTop","scrollStop"],
+        props: ["scrollTop","scrollStop","personalCenter"],
         data(){
           return{
             searchInfo: '',
@@ -56,7 +58,9 @@
             goodsList: [],
             checkedIndex: 0,
             type: 'png',
-            goodsFlag: false
+            goodsFlag: false,
+            islogin: false,
+            personal: false
           }
         },
         computed:{
@@ -84,9 +88,19 @@
                 this.$refs.searchInput.style.width = "70%";
               }
             }
+          },
+          personalCenter: function (val) {
+            this.personal = val;
           }
         },
         methods: {
+          init(){
+            if(Cookies.get("userId")){
+             this.islogin = true;
+            }else {
+              this.islogin = false;
+            }
+          },
           getGoodsList(){
             this.$axios.get("/image/navImage").then((response) => {
               let data = response.data;
@@ -168,11 +182,16 @@
             this.$router.push({
               name: "login"
             })
+          },
+          personalModel(){
+            this.personal = !this.personal;
+            this.$emit("listenModel",this.personal)
           }
         },
         created(){
           this.getGoodsList();
           this.type = this.$store.state.imgType;
+          this.init();
         },
         mounted(){
           this.$nextTick(() => {
@@ -230,12 +249,16 @@
       width: 70px;
       height: 70px;
     }
-    &>span{
+    &>span,&>i{
       position: absolute;
       top: 30px;
       right: 30px;
       color: #fff;
       font-size: 32px;
+    }
+    &>i{
+      font-size: 50px;
+      top: 20px;
     }
     &>.model{
       position: fixed;

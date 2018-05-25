@@ -10,6 +10,8 @@ import store from './store/index'
 import {router} from './router/index';
 import Mint from 'mint-ui';
 import 'mint-ui/lib/style.css'
+import './common/css/font.css'
+import './common/js/font.js'
 Vue.use(Mint);
 
 Vue.prototype.$axios = axios;

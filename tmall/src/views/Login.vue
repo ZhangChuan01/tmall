@@ -4,7 +4,7 @@
       <div class="userInfo">
         <div class="userName">
           <span>账户</span>
-          <input type="text" placeholder="手机号/邮箱/会员名" v-model="userName">
+          <input type="text" placeholder="手机号/用户名" v-model="userName">
         </div>
         <div class="password">
           <span>登录密码</span>
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+    import Cookies from 'js-cookie'
     export default {
         name: "login",
         data(){
@@ -47,9 +48,12 @@
                 password: this.password
               }).then((response) => {
                 let data = response.data;
+                console.log(data)
+                Cookies.set("userId",data.res.id,{expires: 1/(24*2)});
+                Cookies.set("userName",data.res.name,{expires: 1/(24*2)});
                 if(data.code == 1){
                   this.$router.push({
-                    path: "/"
+                    name: "home"
                   })
                 }else {
                   this.$toast({

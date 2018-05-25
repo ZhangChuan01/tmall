@@ -1,7 +1,7 @@
 <template>
     <div id="home" ref="home">
         <div class="top">
-          <NavHeader :scrollTop="scrollTop" :scrollStop="scrollStop"></NavHeader>
+          <NavHeader :scrollTop="scrollTop" :scrollStop="scrollStop" :personalCenter="personalCenter" v-on:listenModel="changeModel"></NavHeader>
         </div>
         <div class="content" ref="content">
           <NavMenu></NavMenu>
@@ -12,13 +12,35 @@
           <AppFooter></AppFooter>
         </div>
         <div class="backTop" v-show="show" v-finger:tap="backTop">
-          <i class="iconfont icon-fanhuidingbu"></i>
+          <i class="iconfont icon-huidingbu"></i>
           <span>顶部</span>
+        </div>
+        <div class="modelWrapper" v-show="personalCenter">
+          <div class="model">
+            <div class="modelHeader">
+              <span>我的天猫</span>
+              <span @click="closeMdel">×</span>
+              <div></div>
+            </div>
+            <ul class="list">
+              <li v-for="(item,index) in list">
+                <div class="wrapper">
+                  <svg class="icon hide" aria-hidden="true" v-if="index == 0">
+                    <use xlink:href="#icon-tm"></use>
+                  </svg>
+                  <i class="iconfont" :class="item.class" v-if="index != 0"></i>
+                  <div>{{item.title}}</div>
+                </div>
+              </li>
+              <div class="line"></div>
+            </ul>
+          </div>
         </div>
     </div>
 </template>
 
 <script>
+    import Cookies from 'js-cookie'
     import NavHeader from '../components/NavHeader'
     import NavMenu from '../components/NavMenu'
     import Banner from '../components/Banner'
@@ -33,13 +55,47 @@
             show: false,
             scrollTop: 0,
             scrollStop: true,
-            type: ''
+            type: '',
+            userInfo: '',
+            list: [
+              {
+                title: "天猫客户端",
+                class: "icon-tm"
+              },
+              {
+                title: "新人有礼",
+                class: "icon-libao"
+              },
+              {
+                title: "购物车",
+                class: "icon-gouwuche"
+              },
+              {
+                title: "收藏宝贝",
+                class: "icon-favorite_diss"
+              },
+              {
+                title: "收藏店铺",
+                class: "icon-dianpu"
+              },
+              {
+                title: "全部订单",
+                class: "icon-icon-"
+              }],
+            modelFlag: false,
+            personalCenter: false
           }
         },
         components:{
           NavHeader,NavMenu,Banner,Offcial,Goods,AppFooter
         },
         methods:{
+          init(){
+            let userId = Cookies.get("userId");
+            let userName = Cookies.get("userName");
+            console.log(userId);
+            console.log(userName);
+          },
           getBroeser(){
             let browser = window.navigator.userAgent;
             let reg = /Android|webOS|iPhone|iPod|BlackBerry/i
@@ -74,6 +130,12 @@
             }catch(err) {
               return  false;
             }
+          },
+          changeModel(data){
+            this.personalCenter = data;
+          },
+          closeMdel(){
+            this.personalCenter = false
           }
         },
         created(){
@@ -81,6 +143,7 @@
             this.$store.commit("setImgType",".webp");
             this.type = this.$store.state.imgType;
           }
+          this.init();
         },
         mounted(){
           this.getScrollTop();
@@ -129,13 +192,116 @@
       z-index: 100;
       i{
         display: block;
-        margin-top: 10px;
+        font-size: 46px;
       }
       span{
         font-size: 24px;
         color: #333;
       }
     }
-
+    .modelWrapper{
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0,0,0,0.4);
+      .model{
+        position: absolute;
+        top: 88px;
+        width: 100%;
+        .modelHeader{
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 80px;
+          background-color: rgb(229, 229, 229);
+          span:first-child{
+            font-size: 30px;
+            line-height: 80px;
+            float: left;
+            margin-left: 30px;
+            color: #333;
+            font-weight: bolder;
+          }
+          span:nth-child(2){
+            float: right;
+            font-size: 60px;
+            line-height: 80px;
+            margin-right: 30px;
+            color: #8c939d;
+          }
+          div{
+            position: absolute;
+            top: -26px;
+            right: 50px;
+            width: 0;
+            height: 0;
+            border-left: 14px solid transparent;
+            border-right: 14px solid transparent;
+            border-bottom: 28px solid rgb(229, 229, 229);
+          }
+        }
+        .list{
+          position: relative;
+          font-size: 0;
+          background-color: #fff;
+          margin-top: 80px;
+          padding: 0;
+          li{
+            display: inline-block;
+            box-sizing: border-box;
+            width: 33%;
+            font-size: 28px;
+            height: 200px;
+            text-align: center;
+            .wrapper{
+              transform: translateY(50%);
+            }
+            &:nth-child(2){
+              border-left: 1px solid #ccc; /*no*/
+              border-right: 1px solid #ccc; /*no*/
+              i{
+                color: #ff412d;
+              }
+            }
+            &:nth-child(3) i{
+              color: #e45d5d;
+            }
+            &:nth-child(4){
+              i{
+                color: #e56262;
+              }
+            }
+            &:nth-child(5){
+              border-left: 1px solid #ccc; /*no*/
+              border-right: 1px solid #ccc; /*no*/
+              i{
+                color: #8099f4;
+              }
+            }
+            &:nth-child(6) i{
+              color: #f97b1e;
+            }
+            i{
+              font-size: 60px;
+            }
+            .icon {
+              width: 60px; height: 60px;
+              fill: currentColor;
+              overflow: hidden;
+            }
+          }
+          .line{
+            position: absolute;
+            width: 100%;
+            height: 1px; /*no*/
+            background-color: #ccc;
+            top: 200px;
+          }
+        }
+      }
+    }
   }
 </style>

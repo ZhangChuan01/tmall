@@ -20,7 +20,7 @@ export const registerRouter = {
   path: '/register',
   name: 'register',
   meta: {
-    title: '登录'
+    title: '注册'
   },
   component: resolve => { require(['@/views/Register.vue'], resolve); }
 };
@@ -29,11 +29,19 @@ export const forgetRouter = {
   path: '/forget',
   name: 'forget',
   meta: {
-    title: '登录'
+    title: '忘记密码'
   },
   component: resolve => { require(['@/views/ForgetPassword.vue'], resolve); }
 };
 
+export const goodsDetailRouter = {
+  path: '/goodsDetail',
+  name: 'goodsDetail',
+  meta: {
+    title: '商品详情'
+  },
+  component: resolve => { require(['@/views/GoodsDetail.vue'], resolve); }
+};
 export const routers = [
-  homeRouter,loginRouter,registerRouter,forgetRouter
+  homeRouter,loginRouter,registerRouter,forgetRouter,goodsDetailRouter
 ];
