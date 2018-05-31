@@ -1,54 +1,94 @@
 <template>
     <div id="GoodsDetail">
       <div class="header1">
-        <div class="back">
+        <div class="back" @click="back">
           <i class="iconfont icon-xiangzuo"></i>
         </div>
         <div class="cart">
           <i class="iconfont icon-gouwuche"></i>
         </div>
       </div>
-      <div class="goodsInfo">
-        <img class="bg" src="/static/image/goodsDetail/paoxie.png" alt="">
-        <div class="text">
-          <div class="name">马克华菲夏季休闲跑步鞋男网面透气运动鞋韩版潮流小白鞋百搭男鞋</div>
-          <div class="realityPrice">
-            <div>￥<span>299</span></div>
-            <div>品牌促销</div>
+      <transition name="fade">
+        <div class="header2" v-if="scrollTop < -70">
+          <div class="back" @click="back">
+            <i class="iconfont icon-xiangzuo"></i>
           </div>
-          <div class="price">
-            <span>价格:</span>
-            <span>595</span>
+          <div class="tab">
+            <div :class="{'actived':activedFlag == index}" v-for="(item,index) in tabList" @click="scrollto(index)">{{item}}</div>
           </div>
-          <div class="info">
-            <div class="express">
-              <span>快递:</span>
-              <span>0.00</span>
-            </div>
-            <div class="count">
-              <span>月销量:</span>
-              <span>9446件</span>
-            </div>
-            <div class="place">浙江温州</div>
+          <div class="cart">
+            <i class="iconfont icon-gouwuche"></i>
           </div>
         </div>
-      </div>
-      <div class="voucherWrapper" @click="showVoucherModel">
-        <div class="left">
-          <div class="voucher">
-            <img src="/static/image/goodsDetail/quan1.png" alt="">
-            <span>全天猫实物商品通用</span>
+      </transition>
+      <div class="goodsWrapper" ref="GoodsDetail">
+        <div class="goods">
+          <div class="goodsInfo" ref="goodsInfo">
+            <img class="bg" v-lazy="'./static' + goodsInfo.url + type">
+            <div class="text">
+              <div class="name">{{goodsInfo.name}}</div>
+              <div class="realityPrice">
+                <div>￥<span>{{goodsInfo.price}}</span></div>
+                <div>品牌促销</div>
+              </div>
+              <div class="price">
+                <span>价格:</span>
+                <span>{{goodsInfo.price2}}</span>
+              </div>
+              <div class="info">
+                <div class="express">
+                  <span>快递:</span>
+                  <span>0.00</span>
+                </div>
+                <div class="count">
+                  <span>月销量:</span>
+                  <span>{{goodsInfo.sales}}件</span>
+                </div>
+                <div class="place">{{goodsInfo.place}}</div>
+              </div>
+            </div>
           </div>
-          <div class="voucher">
-            <img src="/static/image/goodsDetail/quan2.png" alt="">
-            <span>领取优惠券</span>
+          <div class="voucherWrapper" @click="showVoucherModel">
+            <div class="left">
+              <div class="voucher">
+                <img src="/static/image/goodsDetail/quan1.png" alt="">
+                <span>全天猫实物商品通用</span>
+              </div>
+              <div class="voucher">
+                <img src="/static/image/goodsDetail/quan2.png" alt="">
+                <span>领取优惠券</span>
+              </div>
+            </div>
+            <div class="right">领取</div>
+          </div>
+          <div class="select" @click="showSelectModel">
+            <div class="left">请选择产品参数</div>
+            <div class="right">...</div>
+          </div>
+          <div class="evaluate" ref="evaluate">
+            <div class="title">商品评价(556248)</div>
+            <div class="evaluateDetail" :class="{'badEvaluate':item.rating<4}" v-for="item in evaluate">{{item.text}}</div>
+            <img src="/static/image/goodsDetail/p.jpg" alt="">
+            <div class="text">我是我们村第一个在淘宝上买东西的人。这里大部分人是不网 购的。他们买东西价格一般不超过五块，听说我在淘宝买东西 后，整个村都震惊了，村长跑到我家里对我爸说我是不是疯了， 老公跟我闹离婚，说这日子没法过了。面对重重压力，我坚持 要买。我相信我这个月的工资不会白花，终于快递我怀揣着激 动的心情，颤抖的打开包裹，那到了，一霎那，感觉我的眼都 要亮瞎了，啊这颜值这手感，只怪我读书少，这质量无法 用华丽的语整个言来形容它。我举着它，骄傲的站在村口，村 都沸腾了，更有人喊，我不给他们看，他们就跳井。吓得我 赶紧收起宝贝，挤出人群落荒而逃。为测试宝贝效果，我立刻 去我们村高达100米山上村长家客厅里用。用完后，在全村人 羡慕的目光中，仰首挺胸扬长而去。</div>
+            <div class="time">2018-05-26</div>
+            <div class="moreEvaluate">
+              <span>查看更多评价</span>
+            </div>
+          </div>
+          <div class="detail" ref="detail">
+            <div class="title">
+              <div class="line"></div>
+              <div>详情</div>
+              <div class="line"></div>
+            </div>
+            <div class="showImg"><span>商品图片</span></div>
+            <div class="imgContainer">
+              <img src="/static/image/goodsDetail/good1detail1.webp" alt="">
+              <img src="/static/image/goodsDetail/good1detail2.webp" alt="">
+              <img src="/static/image/goodsDetail/good1detail3.webp" alt="">
+            </div>
           </div>
         </div>
-        <div class="right">领取</div>
-      </div>
-      <div class="select" @click="showSelectModel">
-        <div class="left">请选择颜色分类/尺码</div>
-        <div class="right">...</div>
       </div>
       <div class="footer">
         <div class="left">
@@ -112,37 +152,36 @@
       <mt-popup
         v-model="selectModel"
         position="bottom">
-        <div class="selectModel" ref="selectModel">
+        <div class="selectModel">
           <div class="content">
             <div class="header">
               <div class="imgContainer">
-                <img v-for="(item,index) in imgList" :src="item" alt="" v-show="index == colorChecked">
+                <img v-for="(item,index) in imgList" :src="item" alt="" v-show="smallImg(index)">
               </div>
               <div class="selectInfo">
-                <div class="price">￥299</div>
-                <div class="stock">库存168件</div>
-                <div class="stock">已选择: 白色 42</div>
+                <div class="price">￥{{price}}</div>
+                <div class="stock" v-show="flag1">库存 {{stock}}</div>
+                <div class="stock" v-show="!flag1">有货</div>
+                <div class="stock">{{selectInfo}}</div>
               </div>
               <div class="close" @click="selectModel = !selectModel">×</div>
             </div>
-            <div class="goodsInfos">
-              <div>颜色分类</div>
-              <div class="list">
-                <span class="btn" :class="{'checked': index == colorChecked}" v-for="(item,index) in color" @click="colorChecked=index">{{item}}</span>
-              </div>
-            </div>
-            <div class="goodsInfos">
-              <div>尺码</div>
-              <div class="list">
-                <span v-for="(item,index) in size" :class="{'checked':index == 0}">{{item}}</span>
-              </div>
-            </div>
-            <div class="count">
-              <span>购买数量</span>
-              <div class="changeNum">
-                <i class="iconfont icon-jianhao" :class="{'numActive':num > 1}" @click="sub"></i>
-                <input type="text" v-model="num">
-                <i class="iconfont icon-jiahao" :class="{'numActive':num < 100}" @click="add"></i>
+            <div class="scrollWrapper" ref="scrollWrapper" style="overflow: hidden;">
+              <div class="selectScroll">
+                <div class="goodsInfos" v-for="(item,index) in list">
+                  <div>{{item.title}}</div>
+                  <div class="list">
+                    <span class="btn" :class="[{'checked': index2 == flagList[index].index},{'nostock': noStockFlag[index][index2] }]" v-for="(item2,index2) in item.val" @click="select(index,index2,item2,noStockFlag[index][index2])">{{item2}}</span>
+                  </div>
+                </div>
+                <div class="count">
+                  <span>购买数量</span>
+                  <div class="changeNum">
+                    <i class="iconfont icon-jianhao" :class="{'numActive':num > 1}" @click="sub"></i>
+                    <input type="text" v-model="num">
+                    <i class="iconfont icon-jiahao" :class="{'numActive': addCheck}" @click="add"></i>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -162,8 +201,13 @@
         name: "GoodsDetail",
         data(){
           return{
+            goodsData: [],
             voucherModel: false,
             selectModel: false,
+            type: 'png',
+            num: 1,
+            scrollTop: 0,
+            goodsInfo: {url:''},
             shop: [
               {
                 price: 10,
@@ -182,30 +226,241 @@
                 totalPrice: 599
               }
             ],
-            size: [39,40,41,42,43,44,45,46],
-            num: 1,
-            color: ["本白","纯黑"],
-            colorChecked: 0,
-            imgList: ["/static/image/goodsDetail/goods2_small1.jpg","/static/image/goodsDetail/goods2_small2.jpg"]
+            goodId: 1,
+            addCheck: true,
+            tabList: ["商品","评价","详情"],
+            activedFlag: 0,
+            flagList: [],
+            flag1: false,
+            noStockFlag: [],
+            noStock: [],
+            noStockList: [],
+            stock: 0,
+            list: [],
+            price: 0,
+            imgList: [],
+            evaluate: [
+              {
+                text: "便宜(19733)",
+                rating: 4
+              },
+              {
+                text: "快递不错(14300)",
+                rating: 5
+              },
+              {
+                text: "质量很好(9253)",
+                rating: 5
+              },
+              {
+                text: "味道不错(8070)",
+                rating: 4
+              },
+              {
+                text: "人群(4728)",
+                rating: 4
+              },
+              {
+                text: "质量一般(1070)",
+                rating: 3
+              }
+            ]
+          }
+        },
+        computed:{
+          selectInfo() {
+            let info = '';
+            if(this.flagList.length == 0){
+              return;
+            }
+            let flag = this.flagList.every((item) => {
+              return item.index != -1;
+            })
+            if(flag){
+              info = '已选择: ';
+              this.flagList.forEach((item) => {
+                info += item.content+" "
+              })
+              this.flag1 = true;
+              if(this.stock>0 && this.num>=this.stock){
+                this.num = this.stock
+                this.addCheck = false;
+              }else{
+                this.addCheck = true;
+              }
+            }else {
+              info = '请选择: ';
+              this.flagList.forEach((item,index) => {
+                if(item.index == -1){
+                  info += this.list[index].title
+                }
+              })
+            }
+            console.log(flag)
+            return info
+          }
+        },
+        watch: {
+          num: function (newVal) {
+            this.num = parseInt(newVal)
+              if (newVal < 1) {
+                this.num = 1
+              }
+            console.log(typeof this.stock);
+            if(typeof this.stock == "number" && this.stock > 0){
+                if(this.num >= this.stock){
+                  this.num = this.stock;
+                  this.addCheck = false;
+                }else {
+                  this.addCheck = true;
+                }
+              }
           }
         },
         methods:{
+          back(){
+            this.$router.go(-1);
+          },
+          scrollto(index){
+            console.log(index)
+            if(index == 0){
+              this.GoodsDetailScroll.scrollToElement(this.$refs.goodsInfo,1000,0,-50);
+            }else if(index == 1){
+              this.GoodsDetailScroll.scrollToElement(this.$refs.evaluate,1000,0,-50);
+            }else {
+              this.GoodsDetailScroll.scrollToElement(this.$refs.detail,1000,0,-50);
+            }
+          },
+          firstNoSrock(){
+            let len = this.list.length;
+            if(len == 0){
+              return;
+            }
+            if(this.noStockList.length<1){
+              return;
+            }
+            if(len == 1){
+              this.list[0].val.forEach((item,index) => {
+                this.noStockList.forEach((item2) => {
+                  if(item2.indexOf(item)>-1){
+                    this.noStockFlag[0][index] = true
+                  }
+                })
+              })
+            }else {
+              this.list.forEach((item1,index1) => {
+                item1.val.forEach((item2,index2) => {
+                  this.list.forEach((item3,index3) => {
+                    if(index1 != index3){
+                      let x = 0;
+                      item3.val.forEach((item4) => {
+                        this.noStockList.forEach((item5) => {
+                          if(item5.indexOf(item4)>-1 && item5.indexOf(item2)>-1){
+                            x++
+                          }
+                        })
+                      })
+                      if(x == item3.val.length){
+                        this.noStockFlag[index1][index2] = true;
+                      }
+                    }
+                  })
+                })
+              })
+            }
+          },
+          nostock(index,content) {
+            this.list.forEach((item,index1) => {
+              if(index1 != index){
+                item.val.forEach((item2,index2) => {
+                  this.noStockFlag[index1][index2] = false;
+                  this.noStock.forEach((item3) => {
+                    if(item3.indexOf(item2)>-1 && item3.indexOf(content)>-1){
+                      this.noStockFlag[index1][index2] = true;
+                    }
+                  })
+                })
+              }
+            })
+          },
+          select(index,val,content,flag){
+            if(flag){
+              return;
+            }
+            this.flagList[index].index = val;
+            this.flagList[index].content = content;
+            let arr = [];
+            this.noStockList.forEach((item) => {
+              if(item.indexOf(content)>-1){
+                arr.push(item);
+              }
+            })
+            this.noStock = arr;
+            this.nostock(index,content)
+            this.getStock();
+          },
+          smallImg(index){
+            if(this.imgList.length == 1){
+              return true
+            }else {
+              if(this.flagList[0].index == -1){
+                return index == 0
+              }else {
+                return index == this.flagList[0].index
+              }
+            }
+          },
+          init(){
+            this.goodId = this.$route.params.id;
+            this.type = this.$store.state.imgType;
+            this.$axios.get("/goods/detail",{
+              params: {
+                goodId:this.goodId
+              }
+            }).then((response) => {
+              let data = response.data;
+              if(data.code == 1){
+                this.goodsInfo = data.res;
+                this.price = this.goodsInfo.price;
+                // this.$set(this.goodsInfo,0,data.res);
+              }else {
+                this.$toast({
+                  message: '请求数据出错',
+                  duration: 2000
+                })
+              }
+            })
+          },
           add () {
-            if (this.num < 100) {
+            if(typeof this.stock != "Number"){
               this.num++
+            }else {
+              if (this.num < this.stock) {
+                this.num++
+              }
             }
           },
           sub () {
-            if (this.num > 0) {
+            if (this.num > 1) {
               this.num--
             }
+          },
+          getStock(){
+            let info = this.selectInfo.split(" ").toString();
+            this.goodsData.forEach((item,index) => {
+              if(info.indexOf(item.info)>-1){
+                this.stock = item.stock;
+                this.price = item.price;
+                return;
+              }
+            })
           },
           showVoucherModel(){
             this.voucherModel = !this.voucherModel;
             if(!this.modelScroll){
               this.modelScroll = new BScroll(this.$refs.voucherModel,{
                 click: true,
-                probeType: 2
+                probeType: 3
               });
             }else {
               this.modelScroll.refresh();
@@ -213,13 +468,117 @@
           },
           showSelectModel(){
             this.selectModel = !this.selectModel;
-            if(!this.modelScroll){
-              this.selectScroll = new BScroll(this.$refs.selectModel,{
-                click: true,
-                probeType: 2
-              });
-            }else {
-              this.selectScroll.refresh();
+            this.getStock();
+            this.$nextTick(() => {
+              if(!this.scrollWrapperScroll){
+                this.scrollWrapperScroll = new BScroll(this.$refs.scrollWrapper,{
+                  click: true,
+                  probeType: 3
+                });
+              }else {
+                this.scrollWrapperScroll.refresh();
+              }
+            })
+          },
+          getGoods(){
+            this.$axios.get("/goods/detail/selectInfo",{
+              params: {
+                gId: this.goodId
+              }
+            }).then((response) => {
+              let data = response.data;
+              if(data.code == 1){
+                this.goodsData = data.res;
+                let arr = data.res[0].kind.split(",");
+                arr.forEach((item,index) => {
+                  let obj = {};
+                  obj.title = item;
+                  obj.val = [];
+                  this.$set(this.list,index,obj);
+                })
+                data.res.forEach((item) => {
+                  if(item.stock == 0){
+                    this.noStockList.push(item.info);
+                  }
+                  let arr = item.info.split(",");
+                  arr.forEach((item2,index2) => {
+                    if(this.list[index2].val.indexOf(item2)<0){
+                      this.list[index2].val.push(item2);
+                    }
+                  })
+                  if(this.imgList.indexOf(item.path)<0){
+                    let len = this.imgList.length;
+                    this.$set(this.imgList,len,item.path);
+                  }
+                })
+                this.list.forEach((item) => {
+                  let obj = {
+                    index: -1,
+                    content: ''
+                  };
+                  let len = this.flagList.length;
+                  this.$set(this.flagList,len,obj);
+                })
+                this.list.forEach((item,index) => {
+                  let num = [];
+                  let len = this.noStockFlag.length;
+                  this.$set(this.noStockFlag,index,num)
+                  item.val.forEach(() => {
+                    this.noStockFlag[index].push(false);
+                  })
+                })
+              }
+            })
+          },
+          quickSort(arr,low,high){
+            if(arr.length <= 0) return;
+            if(low >= high) return;
+            let left = low;
+            let right = high;
+            let temp = arr[left];
+            while (left < right){
+              while(left < right && arr[right] >= temp){  //坑2：从后向前找到比基准小的元素，插入到基准位置坑1中
+                right--;
+              }
+              arr[left] = arr[right];
+              while(left < right && arr[left] <= temp){   //坑3：从前往后找到比基准大的元素，放到刚才挖的坑2中
+                left++;
+              }
+              arr[right] = arr[left];
+            }
+            arr[left] = temp;   //基准值填补到坑3中，准备分治递归快排
+            console.log(arr);
+            this.quickSort(arr, low, left-1);
+            this.quickSort(arr, left+1, high);
+          },
+          myQuickSort(arr){
+            if(arr.length <= 1) return arr;
+            let index = Math.floor(arr.length/2);
+            let temp = arr.splice(index, 1)[0];
+            let leftArr = [],rightArr = [];
+            for (let i=0;i<arr.length;i++){
+              if(arr[i] < temp){
+                leftArr.push(arr[i])
+              }else {
+                rightArr.push(arr[i])
+              }
+            }
+            let _this = this;
+            return this.myQuickSort(leftArr).concat([temp],_this.myQuickSort(rightArr))
+          },
+          binarySearch(arr,target){
+            let mid;
+            let start = 0;
+            let end = arr.length;
+            while (start <= end){
+              mid = Math.floor((start+end)/2)
+              if(target<arr[mid]){
+                end = mid - 1
+              }else if(target>arr[mid]){
+                start = mid + 1
+              }else {
+                return mid
+              }
             }
           }
         },
@@ -228,10 +587,36 @@
             let height = document.body.clientHeight || document.documentElement.clientHeight;
             let voucherModel = document.querySelector(".voucherModel");
             let selectModel = document.querySelector(".selectModel");
+            let scrollWrapper = document.querySelector(".scrollWrapper");
             voucherModel.style.height = (height*0.6) + "px"
             selectModel.style.height = (height*0.7) + "px"
+            scrollWrapper.style.height = (height*0.7*0.66) + "px"
           })
-
+          if(!this.GoodsDetailScroll){
+            this.GoodsDetailScroll = new BScroll(this.$refs.GoodsDetail,{
+              click: true,
+              probeType: 3
+            });
+            this.GoodsDetailScroll.on("scroll",(pos) => {
+              this.scrollTop = pos.y;
+              if(pos.y<-500 && pos.y>-750){
+                this.activedFlag = 1
+              }else if(pos.y>-501) {
+                this.activedFlag = 0
+              }else {
+                this.activedFlag = 2
+              }
+            })
+          }else {
+            this.GoodsDetailScroll.refresh();
+          }
+        },
+        updated() {
+          this.firstNoSrock();
+        },
+        created(){
+          this.init();
+          this.getGoods();
         }
     }
 </script>
@@ -240,18 +625,36 @@
   #GoodsDetail{
     background-color: #f5f5f5;
     width: 100%;
+    height: 100%;
     text-align: left;
-    padding-bottom: 100px;
+    .goodsWrapper{
+      height: 100%;
+      overflow: hidden;
+    }
+    .goods{
+      padding-bottom: 100px;
+    }
+    .fade-enter-active, .fade-leave-active {
+      transition: opacity .5s;
+    }
+    .fade-enter, .fade-leave-to {
+      opacity: 0;
+    }
     .checked{
       background-color: #FF0036 !important;
       border-color: #FF0036 !important;
       color: #fff !important;
     }
-    .header1{
+    .actived{
+      color: #ff0036 !important;
+      border-color: #ff0036 !important;
+    }
+    .header1,.header2{
       height: 80px;
       position: fixed;
       top: 0;
       width: 100%;
+      z-index: 999;
       .back,.cart{
         width: 60px;
         height: 60px;
@@ -272,6 +675,33 @@
       i{
         color: #fff;
         font-size: 40px;
+      }
+    }
+    .header2{
+      background-color: #fff;
+      color: #999;
+      z-index: 999;
+      .back,.cart{
+        background-color: #fff;
+      }
+      .tab{
+        width: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        font-size: 0;
+        div{
+          display: inline-block;
+          font-size: 30px;
+          padding: 20px 0;
+          width: 33%;
+          text-align: center;
+          border-bottom: 1px solid transparent;  /*no*/
+        }
+      }
+      i{
+        color: #999;
       }
     }
     .goodsInfo{
@@ -392,6 +822,100 @@
         position: absolute;
         right: 18px;
         font-size: 28px;
+      }
+    }
+    .evaluate{
+      margin-top: 20px;
+      padding: 10px 18px;
+      background-color: #fff;
+      color: #666;
+      .title{
+        font-size: 28px;
+      }
+      .evaluateDetail{
+        display: inline-block;
+        margin: 12px 6px;
+        padding: 12px 18px;
+        background-color: #fee;
+        border-radius: 20px;
+      }
+      .badEvaluate{
+        background-color: #f5f5f5;
+      }
+      &>img{
+        display: block;
+        width: 40px;
+        height: 40px;
+      }
+      .text{
+        margin-top: 10px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        line-height: 40px;
+      }
+      .time{
+        margin-top: 10px;
+        color: #999;
+      }
+      .moreEvaluate{
+        text-align: center;
+        span{
+          width: 220px;
+          height: 48px;
+          display: inline-block;
+          margin: 20px auto;
+          border: 1px solid rgba(255,0,54,.5); /*no*/
+          color: rgba(255,0,54,.8);
+          background: #fff;
+          border-radius: 24px;
+          line-height: 48px;
+          -webkit-appearance: none;
+          text-align: center;
+        }
+      }
+    }
+    .detail{
+      .title{
+        width: 100%;
+        height: 80px;
+        text-align: center;
+        line-height: 80px;
+        div{
+          display: inline-block;
+          vertical-align: middle;
+          color: #999;
+          font-size: 28px;
+          &:nth-child(2){
+            padding: 0 10px;
+          }
+        }
+        .line{
+          width: 100px;
+          height: 1px;  /*no*/
+          background-color: #999;
+        }
+      }
+      .showImg{
+        width: 100%;
+        background-color: #fff;
+        margin-top: 20px;
+        height: 70px;
+        line-height: 70px;
+        span{
+          display: inline-block;
+          height: 70px;
+          padding: 0 30px;
+          color: #666;
+          border-left: 3px solid #FF0036;
+        }
+      }
+      .imgContainer{
+        img{
+          width: 100%;
+          height: auto;
+        }
       }
     }
     .mint-popup{
@@ -549,6 +1073,9 @@
       background: #fff;
       width: 100%;
       position: relative;
+      .selectScroll{
+        padding-bottom: 100px;
+      }
       .content{
         padding: 0 18px;
         .header{
@@ -610,6 +1137,9 @@
               margin: 0 16px 16px 0;
               color: #555;
             }
+            .nostock{
+              background-color: #ccc;
+            }
           }
         }
         .count{
@@ -626,15 +1156,21 @@
             float: right;
             i{
               color: #ccc;
+              font-size: 48px;
+              display: inline-block;
+              vertical-align: middle;
             }
             .numActive{
               color: #666666;
             }
             input{
-              width: 50px;
+              width: 70px;
               height: 26px;
               text-align: center;
+              vertical-align: middle;
+              padding: 10px 0;
               background-color: #F0F0F0;
+              border: none;
             }
           }
         }

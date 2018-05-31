@@ -12,6 +12,9 @@ import Mint from 'mint-ui';
 import 'mint-ui/lib/style.css'
 import './common/css/font.css'
 import './common/js/font.js'
+import { Lazyload } from 'mint-ui';
+
+Vue.use(Lazyload);
 Vue.use(Mint);
 
 Vue.prototype.$axios = axios;

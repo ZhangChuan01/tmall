@@ -35,7 +35,7 @@ export const forgetRouter = {
 };
 
 export const goodsDetailRouter = {
-  path: '/goodsDetail',
+  path: '/goodsDetail/:id',
   name: 'goodsDetail',
   meta: {
     title: '商品详情'

@@ -1,10 +1,10 @@
 <template>
     <div id="goods">
       <ul>
-        <li v-for="(item,index) in goodsList" :key="index" class="goods" @click="goodsInfo(item.id)">
+        <li v-for="(item,index) in goodsList" :key="index" class="goods" @click="goodsDetail(item.gid)">
           <div class="goodsInfo">
             <div class="img">
-              <img :src="'./static/'+item.path" :alt="item.name">
+              <img :alt="item.name" v-lazy="'./static/'+item.path">
             </div>
             <div class="goodsName">{{item.name}}</div>
             <div class="prompt">
@@ -34,7 +34,7 @@
         },
         methods: {
           getGoodsData(){
-            this.$axios.get("/image/goods").then((response) => {
+            this.$axios.get("/goods").then((response) => {
               if(response.data.code == "1"){
                 response.data.res.forEach((item) => {
                   if(item.prompt.search(",")>-1){
@@ -47,8 +47,10 @@
               }
             })
           },
-          goodsInfo(goodId){
-            console.log("test");
+          goodsDetail(id){
+            this.$router.push({
+              path: "/goodsDetail/"+id
+            })
           }
         },
         mounted(){
