@@ -118,7 +118,7 @@
             let set = setInterval(() => {
               let scrollTop = content.scrollTop;
               if(scrollTop>0){
-                content.scrollTop -= 500;
+                content.scrollTop -= 200;
               }else {
                 clearInterval(set);
               }

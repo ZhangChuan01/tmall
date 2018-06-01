@@ -106,7 +106,7 @@
           </div>
         </div>
         <div class="right">
-          <div class="addCart">加入购物车</div>
+          <div class="addCart" @click="showSelectModel">加入购物车</div>
           <div class="buy">立即购买</div>
         </div>
       </div>
@@ -186,7 +186,7 @@
             </div>
           </div>
           <div class="btnGroup">
-            <div class="add">加入购物车</div>
+            <div class="add" @click="addCart">加入购物车</div>
             <div class="buy">立即购买</div>
           </div>
         </div>
@@ -197,6 +197,7 @@
 <script>
   import BScroll from 'better-scroll';
   import { Popup } from 'mint-ui';
+  import Cookies from 'js-cookie'
     export default {
         name: "GoodsDetail",
         data(){
@@ -264,7 +265,8 @@
                 text: "质量一般(1070)",
                 rating: 3
               }
-            ]
+            ],
+            clickFlag: true
           }
         },
         computed:{
@@ -296,7 +298,6 @@
                 }
               })
             }
-            console.log(flag)
             return info
           }
         },
@@ -306,7 +307,6 @@
               if (newVal < 1) {
                 this.num = 1
               }
-            console.log(typeof this.stock);
             if(typeof this.stock == "number" && this.stock > 0){
                 if(this.num >= this.stock){
                   this.num = this.stock;
@@ -318,11 +318,63 @@
           }
         },
         methods:{
+          addCart(){
+            let userId = Cookies.get("userId");
+            if(!userId){
+              this.$router.push({
+                path: "/login"
+              })
+            }else {
+              let index = this.selectInfo.indexOf("已选择: ");
+              console.log(index)
+              if(index<0){
+                this.$toast({
+                  message: this.selectInfo,
+                  duration: 2000
+                })
+                return;
+              }
+              let gInfo = this.selectInfo.substring(5);
+              console.log(gInfo);
+              let gId = this.goodId;
+              let gNumber = this.num;
+              let gPath = '';
+              if(this.imgList[this.flagList[0].index]){
+                gPath = this.imgList[this.flagList[0].index];
+              }else {
+                gPath = this.imgList[0];
+              }
+              if(this.clickFlag){
+                this.clickFlag = false;
+                this.$axios.post("/cart/addCart",{
+                  userId: userId,
+                  gInfo: gInfo,
+                  gId: gId,
+                  gNumber: gNumber,
+                  gPath: gPath
+                }).then((response) => {
+                  if(response.data.code == 1){
+                    this.$toast({
+                      message: '加入购物车成功',
+                      duration: 2000
+                    })
+                    setTimeout(() => {
+                      this.clickFlag = true;
+                    },1000)
+                  }else {
+                    this.$toast({
+                      message: '加入购物车失败',
+                      duration: 2000
+                    })
+                  }
+                })
+              }
+            }
+          },
           back(){
             this.$router.go(-1);
           },
           scrollto(index){
-            console.log(index)
             if(index == 0){
               this.GoodsDetailScroll.scrollToElement(this.$refs.goodsInfo,1000,0,-50);
             }else if(index == 1){
@@ -547,7 +599,6 @@
               arr[right] = arr[left];
             }
             arr[left] = temp;   //基准值填补到坑3中，准备分治递归快排
-            console.log(arr);
             this.quickSort(arr, low, left-1);
             this.quickSort(arr, left+1, high);
           },
@@ -621,7 +672,7 @@
     }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
   #GoodsDetail{
     background-color: #f5f5f5;
     width: 100%;

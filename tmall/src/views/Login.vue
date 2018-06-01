@@ -48,13 +48,10 @@
                 password: this.password
               }).then((response) => {
                 let data = response.data;
-                console.log(data)
                 Cookies.set("userId",data.res.id,{expires: 1/(24*2)});
                 Cookies.set("userName",data.res.name,{expires: 1/(24*2)});
                 if(data.code == 1){
-                  this.$router.push({
-                    name: "home"
-                  })
+                  this.$router.go(-1);
                 }else {
                   this.$toast({
                     message: data.msg,

@@ -22,4 +22,7 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
   }
+  .mint-toast{
+    z-index: 9999 !important;
+  }
 </style>

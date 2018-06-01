@@ -160,7 +160,10 @@
                   this.sidebarScroll.refresh();
                 }
                 if(!this.contentScroll){
-                  this.contentScroll = new BScroll(this.$refs.contentWrapper,{});
+                  this.contentScroll = new BScroll(this.$refs.contentWrapper,{
+                    click: true,
+                    probeType: 2
+                  });
                 }else {
                   this.contentScroll.refresh();
                 }
