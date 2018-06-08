@@ -2,7 +2,7 @@
       <div id="navHeader" ref="navHeader">
         <div class="logo">
           <img src="../assets/tmall.png" alt="天猫" v-show="isShow">
-          <input v-model="scrollTop" placeholder="搜索商品、店铺" ref="searchInput">
+          <input v-model="searchInfo" placeholder="搜索商品" ref="searchInput" @keyup.enter="search(searchInfo)">
         </div>
         <img @click="model('show')" src="../assets/menu.png" alt="">
         <span @click="login" v-show="!islogin">登录</span>
@@ -189,6 +189,13 @@
           personalModel(){
             this.personal = !this.personal;
             this.$emit("listenModel",this.personal)
+          },
+          search(searchInfo){
+            if(searchInfo){
+              this.$router.push({
+                path: "/goodList?searchInfo=" + searchInfo
+              })
+            }
           }
         },
         created(){

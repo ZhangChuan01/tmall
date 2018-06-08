@@ -39,7 +39,7 @@ axios.interceptors.response.use(
 
 //路由拦截
 router.beforeEach((to, from, next) => {
-  if(!Cookies.get('userId') && to.path !== '/' && to.path !== '/login' && to.path !== '/register' && to.path !== '/forget' && to.name !== 'goodsDetail'){
+  if(!Cookies.get('userId') && to.path !== '/' && to.path !== '/login' && to.path !== '/register' && to.path !== '/forget' && to.name !== 'goodsDetail' && to.path !== '/goodList'){
     next({
       name: 'login'
     });

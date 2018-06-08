@@ -63,7 +63,7 @@
                     message: "两次输入密码不一致"
                   })
                 }else {
-                  this.$axios.post("/user/forgetPassword",{
+                  this.$axios.put("/user/forgetPassword",{
                     phoneNumber: this.phoneNumber,
                     newPassword: this.password
                   }).then((response) => {
@@ -73,9 +73,11 @@
                         message: "重置成功",
                         duration: 2000
                       })
-                      this.$router.push({
-                        path: "/login"
-                      })
+                      setTimeout(() => {
+                        this.$router.push({
+                          path: "/login"
+                        })
+                      },1000)
                     }else {
                       this.$toast({
                         message: "重置失败",

@@ -1,13 +1,6 @@
 <template>
     <div id="GoodsDetail">
-      <div class="header1">
-        <div class="back" @click="back">
-          <i class="iconfont icon-xiangzuo"></i>
-        </div>
-        <div class="cart">
-          <i class="iconfont icon-gouwuche"></i>
-        </div>
-      </div>
+      <header1></header1>
       <transition name="fade">
         <div class="header2" v-if="scrollTop < -70">
           <div class="back" @click="back">
@@ -17,7 +10,7 @@
             <div :class="{'actived':activedFlag == index}" v-for="(item,index) in tabList" @click="scrollto(index)">{{item}}</div>
           </div>
           <div class="cart">
-            <i class="iconfont icon-gouwuche"></i>
+            <i class="iconfont icon-gouwuche" @click="tocart"></i>
           </div>
         </div>
       </transition>
@@ -198,6 +191,7 @@
   import BScroll from 'better-scroll';
   import { Popup } from 'mint-ui';
   import Cookies from 'js-cookie'
+  import header1 from '../components/Header1'
     export default {
         name: "GoodsDetail",
         data(){
@@ -305,6 +299,10 @@
           num: function (newVal) {
             this.num = parseInt(newVal)
               if (newVal < 1) {
+                this.$toast({
+                  message: "真的不能再少了",
+                  duration: 2000
+                })
                 this.num = 1
               }
             if(typeof this.stock == "number" && this.stock > 0){
@@ -326,7 +324,6 @@
               })
             }else {
               let index = this.selectInfo.indexOf("已选择: ");
-              console.log(index)
               if(index<0){
                 this.$toast({
                   message: this.selectInfo,
@@ -334,29 +331,22 @@
                 })
                 return;
               }
-              let gInfo = this.selectInfo.substring(5);
-              console.log(gInfo);
+              let gInfo = this.selectInfo.substring(5).replace(/\s+/g,',');
+              gInfo = gInfo.substring(0,gInfo.length - 1);
               let gId = this.goodId;
               let gNumber = this.num;
-              let gPath = '';
-              if(this.imgList[this.flagList[0].index]){
-                gPath = this.imgList[this.flagList[0].index];
-              }else {
-                gPath = this.imgList[0];
-              }
               if(this.clickFlag){
                 this.clickFlag = false;
                 this.$axios.post("/cart/addCart",{
                   userId: userId,
                   gInfo: gInfo,
                   gId: gId,
-                  gNumber: gNumber,
-                  gPath: gPath
+                  gNumber: gNumber
                 }).then((response) => {
                   if(response.data.code == 1){
                     this.$toast({
                       message: '加入购物车成功',
-                      duration: 2000
+                      duration: 1000
                     })
                     setTimeout(() => {
                       this.clickFlag = true;
@@ -364,7 +354,7 @@
                   }else {
                     this.$toast({
                       message: '加入购物车失败',
-                      duration: 2000
+                      duration: 1000
                     })
                   }
                 })
@@ -373,6 +363,11 @@
           },
           back(){
             this.$router.go(-1);
+          },
+          tocart(){
+            this.$router.push({
+              name: "cart"
+            })
           },
           scrollto(index){
             if(index == 0){
@@ -474,7 +469,6 @@
               if(data.code == 1){
                 this.goodsInfo = data.res;
                 this.price = this.goodsInfo.price;
-                // this.$set(this.goodsInfo,0,data.res);
               }else {
                 this.$toast({
                   message: '请求数据出错',
@@ -668,6 +662,9 @@
         created(){
           this.init();
           this.getGoods();
+        },
+        components: {
+          header1
         }
     }
 </script>

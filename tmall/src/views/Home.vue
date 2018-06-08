@@ -23,7 +23,7 @@
               <div></div>
             </div>
             <ul class="list">
-              <li v-for="(item,index) in list">
+              <li v-for="(item,index) in list" @click="toitem(index)">
                 <div class="wrapper">
                   <svg class="icon hide" aria-hidden="true" v-if="index == 0">
                     <use xlink:href="#icon-tm"></use>
@@ -90,6 +90,13 @@
           NavHeader,NavMenu,Banner,Offcial,Goods,AppFooter
         },
         methods:{
+          toitem(index){
+            if(index == 2){
+              this.$router.push({
+                name: "cart"
+              })
+            }
+          },
           init(){
             let userId = Cookies.get("userId");
             let userName = Cookies.get("userName");

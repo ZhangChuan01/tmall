@@ -42,6 +42,33 @@ export const goodsDetailRouter = {
   },
   component: resolve => { require(['@/views/GoodsDetail.vue'], resolve); }
 };
+
+export const cartRouter = {
+  path: '/cart',
+  name: 'cart',
+  meta: {
+    title: '购物车'
+  },
+  component: resolve => { require(['@/views/Cart.vue'], resolve); }
+};
+
+export const goodListRouter = {
+  path: '/goodList',
+  name: 'goodList',
+  meta: {
+    title: '搜索结果'
+  },
+  component: resolve => { require(['@/views/GoodList.vue'], resolve); }
+};
+
+export const messageRouter = {
+  path: '/message',
+  name: 'message',
+  meta: {
+    title: '搜索结果'
+  },
+  component: resolve => { require(['@/views/Message.vue'], resolve); }
+};
 export const routers = [
-  homeRouter,loginRouter,registerRouter,forgetRouter,goodsDetailRouter
+  homeRouter,loginRouter,registerRouter,forgetRouter,goodsDetailRouter,cartRouter,goodListRouter,messageRouter
 ];

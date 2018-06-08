@@ -1,12 +1,23 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view v-if="isRouterAlive"/>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  data () {
+    return {
+      isRouterAlive: true
+    }
+  },
+  methods: {
+    reload () {
+      this.isRouterAlive = false
+      this.$nextTick(() => (this.isRouterAlive = true))
+    }
+  }
 }
 </script>
 
@@ -24,5 +35,11 @@ export default {
   }
   .mint-toast{
     z-index: 9999 !important;
+  }
+  .mint-msgbox-btns{
+    height: 100px !important;
+  }
+  .mint-msgbox-content{
+    min-height: 80px;
   }
 </style>

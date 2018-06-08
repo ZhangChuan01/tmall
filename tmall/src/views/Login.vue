@@ -43,13 +43,13 @@
                 duration: 2000
               })
             }else {
-              this.$axios.post("/user/login",{
+              this.$axios.put("/user/login",{
                 name: this.userName,
                 password: this.password
               }).then((response) => {
                 let data = response.data;
-                Cookies.set("userId",data.res.id,{expires: 1/(24*2)});
-                Cookies.set("userName",data.res.name,{expires: 1/(24*2)});
+                Cookies.set("userId",data.res.id,{expires: 1/24});
+                Cookies.set("userName",data.res.name,{expires: 1/24});
                 if(data.code == 1){
                   this.$router.go(-1);
                 }else {
