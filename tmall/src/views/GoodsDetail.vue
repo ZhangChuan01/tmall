@@ -76,9 +76,9 @@
             </div>
             <div class="showImg"><span>商品图片</span></div>
             <div class="imgContainer">
-              <img src="/static/image/goodsDetail/good1detail1.webp" alt="">
-              <img src="/static/image/goodsDetail/good1detail2.webp" alt="">
-              <img src="/static/image/goodsDetail/good1detail3.webp" alt="">
+              <img src="/static/image/goodsDetail/good1detail1.png" alt="">
+              <img src="/static/image/goodsDetail/good1detail2.png" alt="">
+              <img src="/static/image/goodsDetail/good1detail3.png" alt="">
             </div>
           </div>
         </div>
@@ -99,8 +99,8 @@
           </div>
         </div>
         <div class="right">
-          <div class="addCart" @click="showSelectModel">加入购物车</div>
-          <div class="buy">立即购买</div>
+          <div class="addCart" @click="showSelectModel('add')">加入购物车</div>
+          <div class="buy" @click="showSelectModel('buy')">立即购买</div>
         </div>
       </div>
       <mt-popup
@@ -179,8 +179,8 @@
             </div>
           </div>
           <div class="btnGroup">
-            <div class="add" @click="addCart">加入购物车</div>
-            <div class="buy">立即购买</div>
+            <div class="add" @click="addCart('add')">加入购物车</div>
+            <div class="buy" @click="addCart('buy')">立即购买</div>
           </div>
         </div>
       </mt-popup>
@@ -316,7 +316,7 @@
           }
         },
         methods:{
-          addCart(){
+          addCart(kind){
             let userId = Cookies.get("userId");
             if(!userId){
               this.$router.push({
@@ -348,9 +348,13 @@
                       message: '加入购物车成功',
                       duration: 1000
                     })
-                    setTimeout(() => {
-                      this.clickFlag = true;
-                    },1000)
+                    if(kind === 'add'){
+                      setTimeout(() => {
+                        this.clickFlag = true;
+                      },1000)
+                    }else {
+                      this.tocart();
+                    }
                   }else {
                     this.$toast({
                       message: '加入购物车失败',
@@ -511,20 +515,25 @@
             }else {
               this.modelScroll.refresh();
             }
+
           },
-          showSelectModel(){
-            this.selectModel = !this.selectModel;
-            this.getStock();
-            this.$nextTick(() => {
-              if(!this.scrollWrapperScroll){
-                this.scrollWrapperScroll = new BScroll(this.$refs.scrollWrapper,{
-                  click: true,
-                  probeType: 3
-                });
-              }else {
-                this.scrollWrapperScroll.refresh();
-              }
-            })
+          showSelectModel(kind){
+            if(this.selectInfo.indexOf('请选择') >= 0){
+              this.selectModel = !this.selectModel;
+              this.getStock();
+              this.$nextTick(() => {
+                if(!this.scrollWrapperScroll){
+                  this.scrollWrapperScroll = new BScroll(this.$refs.scrollWrapper,{
+                    click: true,
+                    probeType: 3
+                  });
+                }else {
+                  this.scrollWrapperScroll.refresh();
+                }
+              })
+            }else {
+              this.addCart(kind);
+            }
           },
           getGoods(){
             this.$axios.get("/goods/detail/selectInfo",{

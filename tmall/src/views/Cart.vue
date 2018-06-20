@@ -57,12 +57,12 @@
           <div class="selctAll" :class="{'checked':selectAll}" @click="selectAllGood">
             <i class="iconfont icon-check"></i>
           </div>
-          <div>全选</div>
+          <div @click="selectAllGood">全选</div>
         </div>
         <div class="settlement">
           <div>合计: </div>
           <div class="total">￥{{totalPrice}}</div>
-          <div>结算</div>
+          <div @click="settlement">结算</div>
         </div>
       </div>
     </div>
@@ -209,7 +209,6 @@
             })
           },
           deleteGood(id){
-
             MessageBox.confirm('你确定要删除该商品吗?').then(action => {
               this.$axios.delete("/cart/delete?id="+id).then((response) => {
                 if(response.data.code != 1){
@@ -252,7 +251,27 @@
             })
             console.log(this.selectList)
           },
-
+          settlement(){
+            let arr = [];
+            this.selectList.forEach((item,index) => {
+              if(item){
+                arr.push(this.cartList[index].id)
+              }
+            })
+            this.$axios.delete("/cart/deleteAll?arr="+JSON.stringify(arr)).then((response) => {
+              this.$toast({
+                message: response.data.msg,
+                duration: 2000
+              });
+              if(response.data.code == 1){
+                setTimeout(() => {
+                  this.$router.push({
+                    name: 'message'
+                  })
+                },2000)
+              }
+            })
+          }
         },
         created(){
           this.init();
