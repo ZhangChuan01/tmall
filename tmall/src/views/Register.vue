@@ -63,7 +63,7 @@
                   this.$axios.post("/user/register",{
                     name: this.userName,
                     password: this.password,
-                    phoneNmuber: this.phoneNumber
+                    phoneNumber: this.phoneNumber
                   }).then((response) => {
                     if(response.data.code == 1){
                       this.$toast({
