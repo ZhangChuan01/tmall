@@ -17,7 +17,7 @@
       <div class="goodsWrapper" ref="GoodsDetail">
         <div class="goods">
           <div class="goodsInfo" ref="goodsInfo">
-            <img class="bg" v-lazy="'./static' + goodsInfo.url + type">
+            <img class="bg" v-lazy="bgurl">
             <div class="text">
               <div class="name">{{goodsInfo.name}}</div>
               <div class="realityPrice">
@@ -202,7 +202,8 @@
             type: 'png',
             num: 1,
             scrollTop: 0,
-            goodsInfo: {url:''},
+            goodsInfo: {},
+            bgurl: '',
             shop: [
               {
                 price: 10,
@@ -472,6 +473,7 @@
               let data = response.data;
               if(data.code == 1){
                 this.goodsInfo = data.res;
+                this.bgurl = './static' + this.goodsInfo.url + this.type
                 this.price = this.goodsInfo.price;
               }else {
                 this.$toast({
@@ -906,11 +908,13 @@
       }
       .text{
         margin-top: 10px;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
         overflow: hidden;
         line-height: 40px;
+        height: 80px;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
       }
       .time{
         margin-top: 10px;

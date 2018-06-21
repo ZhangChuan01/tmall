@@ -97,12 +97,6 @@
               })
             }
           },
-          init(){
-            let userId = Cookies.get("userId");
-            let userName = Cookies.get("userName");
-            console.log(userId);
-            console.log(userName);
-          },
           getBroeser(){
             let browser = window.navigator.userAgent;
             let reg = /Android|webOS|iPhone|iPod|BlackBerry/i
@@ -145,13 +139,13 @@
             this.personalCenter = false
           }
         },
-        created(){
-          if(this.checkWebp()){
-            this.$store.commit("setImgType",".webp");
-            this.type = this.$store.state.imgType;
-          }
-          this.init();
-        },
+        // created(){
+        //   if(this.checkWebp()){
+        //     this.$store.commit("setImgType",".webp");
+        //     this.type = this.$store.state.imgType;
+        //   }
+        //   this.init();
+        // },
         mounted(){
           this.getScrollTop();
           this.getBroeser();
