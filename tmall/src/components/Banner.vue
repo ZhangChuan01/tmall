@@ -33,23 +33,6 @@
             }
           })
         }
-        // swipe(evt){
-        //   if(evt.direction=="Right"){
-        //     this.$refs.picture.prev();
-        //   }else {
-        //     this.$refs.picture.next();
-        //   }
-        // },
-        // touchStart(){
-        //   this.flag=false;
-        //   let block = document.querySelector(".block");
-        //   block.addEventListener('touchmove',function(event){event.preventDefault(); },false);
-        // },
-        // touchEnd(){
-        //   this.flag=true;
-        //   let block = document.querySelector(".block");
-        //   block.addEventListener('touchmove',function(event){event.preventDefault(); },true);
-        // }
       },
       mounted(){
         this.init();

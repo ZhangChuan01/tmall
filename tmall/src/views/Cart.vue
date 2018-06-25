@@ -249,16 +249,28 @@
             this.selectList.forEach((item,index) => {
               this.$set(this.selectList,index,this.selectAll)
             })
-            console.log(this.selectList)
           },
           settlement(){
             let arr = [];
             this.selectList.forEach((item,index) => {
               if(item){
-                arr.push(this.cartList[index].id)
+                let obj = {};
+                obj.id = this.cartList[index].id;
+                obj.num = this.cartList[index].num;
+                obj.stockId = this.cartList[index].stockId;
+                arr.push(obj)
               }
             })
-            this.$axios.delete("/cart/deleteAll?arr="+JSON.stringify(arr)).then((response) => {
+            if(arr.length==0){
+              this.$toast({
+                message: '请选择要结算的商品',
+                duration: 2000
+              });
+              return
+            }
+            this.$axios.post("/cart/pay",{
+              arr: JSON.stringify(arr)
+            }).then((response) => {
               this.$toast({
                 message: response.data.msg,
                 duration: 2000

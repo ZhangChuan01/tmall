@@ -4,12 +4,14 @@
           <NavHeader :scrollTop="scrollTop" :scrollStop="scrollStop" :personalCenter="personalCenter" v-on:listenModel="changeModel"></NavHeader>
         </div>
         <div class="content" ref="content">
-          <NavMenu></NavMenu>
-          <Banner></Banner>
-          <Offcial></Offcial>
-          <Goods></Goods>
-          <div class="end"></div>
-          <AppFooter></AppFooter>
+          <div>
+            <NavMenu></NavMenu>
+            <Banner></Banner>
+            <Offcial></Offcial>
+            <Goods></Goods>
+            <div class="end"></div>
+            <AppFooter></AppFooter>
+          </div>
         </div>
         <div class="backTop" v-show="show" v-finger:tap="backTop">
           <i class="iconfont icon-huidingbu"></i>
@@ -40,7 +42,7 @@
 </template>
 
 <script>
-    import Cookies from 'js-cookie'
+    import BScroll from 'better-scroll'
     import NavHeader from '../components/NavHeader'
     import NavMenu from '../components/NavMenu'
     import Banner from '../components/Banner'
@@ -83,7 +85,8 @@
                 class: "icon-icon-"
               }],
             modelFlag: false,
-            personalCenter: false
+            personalCenter: false,
+            arr: []
           }
         },
         components:{
@@ -102,16 +105,6 @@
             let reg = /Android|webOS|iPhone|iPod|BlackBerry/i
             if(!reg.test(browser)){
               MessageBox('提示', '请使用移动端设备(手机)浏览器访问此网站');
-            }
-          },
-          getScrollTop(){
-            let content = document.querySelector(".content");
-            let scrollTop = content.scrollTop;
-            this.scrollTop = scrollTop;
-            if(scrollTop>50){
-              this.show = true;
-            }else {
-              this.show = false;
             }
           },
           backTop(){
@@ -137,6 +130,28 @@
           },
           closeMdel(){
             this.personalCenter = false
+          },
+          initScroll(){
+            if(!this.contentScroll){
+              this.contentScroll = new BScroll(this.$refs.content,{
+                click: true,
+                probeType: 3
+              });
+              this.contentScroll.on("scrollEnd",() => {
+                this.scrollStop = true
+              });
+              this.contentScroll.on("scroll",(pos) => {
+                this.scrollTop = parseInt(-pos.y);
+                if(this.scrollTop>50){
+                  this.show = true;
+                }else {
+                  this.show = false;
+                }
+                this.scrollStop = false;
+              });
+            }else {
+              this.contentScroll.refresh();
+            }
           }
         },
         // created(){
@@ -147,18 +162,8 @@
         //   this.init();
         // },
         mounted(){
-          this.getScrollTop();
-          this.getBroeser();
-          let timeout;
-          let content = document.querySelector(".content");
-          content.onscroll = () => {
-            this.getScrollTop();
-            clearTimeout(timeout);
-            this.scrollStop = false;
-            timeout = setTimeout(() => {
-              this.scrollStop = true;
-            },400)
-          };
+          this.initScroll();
+          this.contentScroll.refresh();
         }
     }
 </script>
@@ -171,8 +176,11 @@
     position: relative;
     &>.content{
       flex: 1;
-      overflow: auto;
+      overflow: hidden;
       -webkit-overflow-scrolling: touch;
+      &>div{
+        padding-top: 20px;
+      }
       .end{
         height: 200px;
         background: url("../assets/end.png") no-repeat center center;

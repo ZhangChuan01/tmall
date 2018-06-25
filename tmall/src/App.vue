@@ -42,4 +42,7 @@ export default {
   .mint-msgbox-content{
     min-height: 80px;
   }
+  .mint-toast-text{
+    font-size: 32px;
+  }
 </style>

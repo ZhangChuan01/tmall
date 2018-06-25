@@ -36,7 +36,6 @@
   #navMenu{
     ul{
       height: 160px;
-      margin: 20px 0;
       padding: 0;
     }
     .classification{

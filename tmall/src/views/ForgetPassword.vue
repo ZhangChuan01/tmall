@@ -50,7 +50,6 @@
       },
       methods: {
         submit(){
-          if(this.$refs.slider.isPassing){
             if(!this.phoneNumber || !this.password || !this.rpassword){
               this.$toast({
                 message: "手机号或密码,重复密码不能为空"
@@ -63,28 +62,34 @@
                     message: "两次输入密码不一致"
                   })
                 }else {
-                  this.$axios.put("/user/forgetPassword",{
-                    phoneNumber: this.phoneNumber,
-                    newPassword: this.password
-                  }).then((response) => {
-                    let data = response.data;
-                    if(data.code == 1){
-                      this.$toast({
-                        message: "重置成功",
-                        duration: 2000
-                      })
-                      setTimeout(() => {
-                        this.$router.push({
-                          path: "/login"
+                  if(this.$refs.slider.isPassing){
+                    this.$axios.put("/user/forgetPassword",{
+                      phoneNumber: this.phoneNumber,
+                      newPassword: this.password
+                    }).then((response) => {
+                      let data = response.data;
+                      if(data.code == 1){
+                        this.$toast({
+                          message: "重置成功",
+                          duration: 2000
                         })
-                      },1000)
-                    }else {
-                      this.$toast({
-                        message: "重置失败",
-                        duration: 2000
-                      })
-                    }
-                  })
+                        setTimeout(() => {
+                          this.$router.push({
+                            path: "/login"
+                          })
+                        },1000)
+                      }else {
+                        this.$toast({
+                          message: "重置失败",
+                          duration: 2000
+                        })
+                      }
+                    })
+                  }else {
+                    this.$toast({
+                      message: "请滑动滑块完成验证"
+                    })
+                  }
                 }
               }else {
                 this.$toast({
@@ -93,11 +98,6 @@
                 })
               }
             }
-          }else {
-            this.$toast({
-              message: "请滑动滑块完成验证"
-            })
-          }
         },
         reset(){
           this.phoneNumber = '';
