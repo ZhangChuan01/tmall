@@ -509,15 +509,16 @@
           },
           showVoucherModel(){
             this.voucherModel = !this.voucherModel;
-            if(!this.modelScroll){
-              this.modelScroll = new BScroll(this.$refs.voucherModel,{
-                click: true,
-                probeType: 3
-              });
-            }else {
-              this.modelScroll.refresh();
-            }
-
+            this.$nextTick(() => {
+              if(!this.modelScroll){
+                this.modelScroll = new BScroll(this.$refs.voucherModel,{
+                  click: true,
+                  probeType: 3
+                });
+              }else {
+                this.modelScroll.scrollTo(0,0);
+              }
+            })
           },
           showSelectModel(kind){
             if(this.selectInfo.indexOf('请选择') >= 0){
@@ -530,7 +531,7 @@
                     probeType: 3
                   });
                 }else {
-                  this.scrollWrapperScroll.refresh();
+                  this.scrollWrapperScroll.scrollTo(0,0);
                 }
               })
             }else {
@@ -1031,8 +1032,7 @@
         .title{
           text-align: center;
           font-size: 36px;
-          margin-top: 20px;
-          line-height: 40px;
+          line-height: 80px;
         }
         .info{
           width: 94%;
